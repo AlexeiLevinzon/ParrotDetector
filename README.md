@@ -51,3 +51,9 @@ To further improve the model's performance, future iterations of this project co
 ## Acknowledgments
 
 This project was created as part of the "Practical Deep Learning for Coders 2022" course by Jeremy Howard, offered through FastAI. The course's hands-on approach and emphasis on practical application in the field of deep learning have been instrumental in the completion of this project.
+
+## Image Usage Disclaimer
+
+The images used in this project for training the model were sourced from the web via the DuckDuckGo search engine as part of an educational exercise. It is important to note that these images are provided as examples for personal and educational use only and may not be used for commercial purposes. Each image retains its original rights, and the use of these images is individual and non-transferable. No license for free or commercial use of the images is provided or implied.
+
+Users of this project should ensure they comply with all applicable laws and copyright agreements when sourcing images for their own use. This project and its maintainers do not assume responsibility for any copyright infringement or legal issues resulting from the use or misuse of the images.
