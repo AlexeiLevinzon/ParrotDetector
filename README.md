@@ -57,3 +57,15 @@ This project was created as part of the "Practical Deep Learning for Coders 2022
 The images used in this project for training the model were sourced from the web via the DuckDuckGo search engine as part of an educational exercise. It is important to note that these images are provided as examples for personal and educational use only and may not be used for commercial purposes. Each image retains its original rights, and the use of these images is individual and non-transferable. No license for free or commercial use of the images is provided or implied.
 
 Users of this project should ensure they comply with all applicable laws and copyright agreements when sourcing images for their own use. This project and its maintainers do not assume responsibility for any copyright infringement or legal issues resulting from the use or misuse of the images.
+
+## Commercial Use Disclaimer
+
+This project, including the final model, code, and documentation, is licensed under the Apache-2.0 License, allowing for both personal and commercial use. However, users intending to utilize the model for commercial purposes are required to ensure that all images or data used with the model are appropriately licensed for such use.
+
+The images sourced from the web via the DuckDuckGo search engine for training purposes are provided as examples for educational and personal use only. Users are responsible for obtaining the necessary rights and licenses for any images or data used in a commercial setting.
+
+By using this model, you acknowledge and agree to comply with all relevant copyright laws and licensing agreements. The responsibility for ensuring that any commercial application of the model is legally compliant rests solely with the user.
+
+## Licensing
+
+This project is licensed under the Apache-2.0 License, which permits unrestricted use, distribution, and modification, including commercial applications, provided that all conditions of the license are met. Users are encouraged to review the license terms carefully to ensure compliance with its conditions.
