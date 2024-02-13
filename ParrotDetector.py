@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import subprocess
 
-get_ipython().system("pip install -Uqq fastai")
+# Install or update the fastai package quietly
+subprocess.run("pip install -Uqq fastai", shell=True, check=True)
 
-
-get_ipython().system("pip install -Uqq duckduckgo_search")
-
+# Install or update the duckduckgo_search package quietly
+subprocess.run("pip install -Uqq duckduckgo_search", shell=True, check=True)
 
 from duckduckgo_search import DDGS
 from fastcore.all import *
@@ -50,7 +51,7 @@ def remove_duplicates(image_paths):
     return duplicates
 
 
-urls = search_images("parrot evening photos", max_images=1)
+urls = search_images("parrot photos", max_images=1)
 print(urls[0])
 
 
@@ -66,7 +67,7 @@ im.to_thumb(256, 256)
 
 
 download_url(
-    search_images("forest photos", max_images=1)[0], "forest.jpg", show_progress=true
+    search_images("forest photos", max_images=1)[0], "forest.jpg", show_progress=True
 )
 Image.open("forest.jpg").to_thumb(256, 256)
 
@@ -119,6 +120,6 @@ learn.fine_tune(5)
 
 learn.show_results()
 
-is_bird, _, probs = learn.predict(PILImage.create("p.jpg"))
+is_bird, _, probs = learn.predict(PILImage.create("monkey.jpg"))
 print(f"This is a: {is_bird}.")
-print(f"Probability it's a forest: {probs[0]:.5f}")
+print(f"Probability it's a forest: {probs[0]:.4f}")
