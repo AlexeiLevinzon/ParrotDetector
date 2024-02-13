@@ -1,37 +1,32 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+
+get_ipython().system("pip install -Uqq fastai")
 
 
-get_ipython().system('pip install -Uqq fastai')
-
-
-# In[2]:
-
-
-get_ipython().system('pip install -Uqq duckduckgo_search')
-
-
-# In[3]:
+get_ipython().system("pip install -Uqq duckduckgo_search")
 
 
 from duckduckgo_search import DDGS
-from fastcore.all import * 
+from fastcore.all import *
+
 
 def search_images(term, max_images=100):
     print(f"Searching for '{term}'")
     with DDGS() as ddgs:
         # generator which yields dicts with:
         # {'title','image','thumbnail','url','height','width','source'}
-        search_results = ddgs.images(keywords=term)       
+        search_results = ddgs.images(keywords=term)
         # grap number of max_images urls
         image_urls = [next(search_results).get("image") for _ in range(max_images)]
         # convert to L (functionally extended list class from fastai)
         return L(image_urls)
 
+
 from pathlib import Path
 import hashlib
+
 
 def get_file_hash(file_path):
     """Compute MD5 hash of the file content."""
@@ -40,6 +35,7 @@ def get_file_hash(file_path):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
 
 def remove_duplicates(image_paths):
     """Remove duplicate images based on file content."""
@@ -54,58 +50,48 @@ def remove_duplicates(image_paths):
     return duplicates
 
 
-# In[4]:
-
-
-urls = search_images('parrot evening photos', max_images=1)
+urls = search_images("parrot evening photos", max_images=1)
 print(urls[0])
 
 
-# In[5]:
+from fastdownload import download_url
+
+dest = "parrot.jpg"
+download_url(urls[0], dest, show_progress=False)
+
+from fastai.vision.all import *
+
+im = Image.open(dest)
+im.to_thumb(256, 256)
 
 
-from fastdownload import download_url 
-dest = 'parrot.jpg' 
-download_url(urls[0], dest, show_progress=False) 
-
-from fastai.vision.all import * 
-im = Image.open(dest) 
-im.to_thumb(256,256)
+download_url(
+    search_images("forest photos", max_images=1)[0], "forest.jpg", show_progress=true
+)
+Image.open("forest.jpg").to_thumb(256, 256)
 
 
-# In[ ]:
+searches = "forest", "parrot"
+path = Path("parrot_or_not")
 
+from time import sleep
 
-download_url(search_images('forest photos', max_images=1)[0], 'forest.jpg', show_progress=true) 
-Image.open('forest.jpg').to_thumb(256,256)
-
-
-# In[ ]:
-
-
-searches = 'forest','parrot' 
-path = Path('parrot_or_not') 
-
-from time import sleep 
-for o in searches: 
-    dest = (path/o) 
-    dest.mkdir(exist_ok=True, parents=True) 
-    download_images(dest, urls=search_images(f'{o} photo')) 
+for o in searches:
+    dest = path / o
+    dest.mkdir(exist_ok=True, parents=True)
+    download_images(dest, urls=search_images(f"{o} photo"))
     sleep(10)
-    download_images(dest, urls=search_images(f'{o} sun photo')) 
-    sleep(10) 
-    download_images(dest, urls=search_images(f'{o} evening photo')) 
-    sleep(10) 
-    download_images(dest, urls=search_images(f'{o} shade photo')) 
-    sleep(10) 
-    resize_images(path/o, max_size=400, dest=path/o)
+    download_images(dest, urls=search_images(f"{o} sun photo"))
+    sleep(10)
+    download_images(dest, urls=search_images(f"{o} evening photo"))
+    sleep(10)
+    download_images(dest, urls=search_images(f"{o} shade photo"))
+    sleep(10)
+    resize_images(path / o, max_size=400, dest=path / o)
 
 
-# In[ ]:
-
-
-failed = verify_images(get_image_files(path)) 
-failed.map(Path.unlink) 
+failed = verify_images(get_image_files(path))
+failed.map(Path.unlink)
 print(len(failed))
 
 # Remove duplicate images
@@ -116,39 +102,23 @@ for file in duplicates:
 print(len(duplicates))
 
 
-# In[ ]:
-
-
-dls = DataBlock( 
-    blocks=(ImageBlock, CategoryBlock), 
-    get_items=get_image_files, 
-    splitter=RandomSplitter(valid_pct=0.2, seed=42), 
-    get_y=parent_label, 
-    item_tfms=[Resize(192, method='squish')] 
-).dataloaders(path) 
+dls = DataBlock(
+    blocks=(ImageBlock, CategoryBlock),
+    get_items=get_image_files,
+    splitter=RandomSplitter(valid_pct=0.2, seed=42),
+    get_y=parent_label,
+    item_tfms=[Resize(192, method="squish")],
+).dataloaders(path)
 
 dls.show_batch(max_n=6)
 
 
-# In[ ]:
-
-
-learn = vision_learner(dls, resnet18, metrics=error_rate) 
+learn = vision_learner(dls, resnet18, metrics=error_rate)
 learn.fine_tune(5)
-
-
-# In[ ]:
 
 
 learn.show_results()
 
-is_bird,_,probs = learn.predict(PILImage.create('p.jpg')) 
-print(f"This is a: {is_bird}.") 
+is_bird, _, probs = learn.predict(PILImage.create("p.jpg"))
+print(f"This is a: {is_bird}.")
 print(f"Probability it's a forest: {probs[0]:.5f}")
-
-
-# In[ ]:
-
-
-
-
